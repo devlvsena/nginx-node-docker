@@ -2,7 +2,7 @@
 
 Criar um docker-compose contento a configuração de um container nginx, um container com uma aplicação em nodejs e um container com o banco de dados mysql
 
-# Requisitos
+## Requisitos
 
 - [] Container Nginx deve ser um proxy reverso, que recebera as requisições
 - [] Container com banco de dados MySQL
