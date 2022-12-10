@@ -1,0 +1,9 @@
+services:
+
+  app:
+    image: lvsena/node-webapp
+    build: ./app
+    volumes:
+      - ${PWD}/app/src/app.js:/home/node/app/app.js
+    ports:
+      - "3030:3030"
