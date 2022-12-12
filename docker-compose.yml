@@ -3,7 +3,43 @@ services:
   app:
     image: lvsena/node-webapp
     build: ./app
+    entrypoint: wait-for db:3306 --timeout=180 -- npm run start
     volumes:
       - ${PWD}/app/src/app.js:/home/node/app/app.js
+    networks:
+      - webapp_net
+      - back_network
+    depends_on: ["db", "proxy"]
+
+  db:
+    image: mysql:5.7
+    command: ["--innodb-use-native-aio=0", "--max-allowed-packet=67108864"]
+    platform: linux/amd64
+    restart: always
+    volumes:
+      - ${PWD}/mysql/data/:/var/lib/mysql
+      - ${PWD}/mysql/initdb/:/docker-entrypoint-initdb.d/
     ports:
-      - "3030:3030"
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db
+    networks:
+      - back_network
+
+  proxy:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    volumes:
+      - ${PWD}/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8080:80
+    networks:
+      - webapp_net
+
+networks:
+  webapp_net:
+    driver: bridge
+  back_network:
+    driver: bridge
