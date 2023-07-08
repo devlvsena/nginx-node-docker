@@ -15,7 +15,7 @@ connection.query(`INSERT INTO people(name) values('Leonardo')`)
 connection.end()
 
 app.get('/', async (_req, res) => {
-    let html = '<h1>Full Cycle Rocks!</h1>'
+    let html = '<h1>Hello World!</h1>'
 
     const connection = mysql.createConnection(dbConfig);
     connection.query('SELECT * FROM people', (err, results) => {
